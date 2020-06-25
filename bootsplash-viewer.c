@@ -124,9 +124,6 @@ int main(int argc, char** argv) {
 		exit(1);
 	}
 
-	printf("bg %02X%02X%02X\n", header.bg_red, header.bg_green, header.bg_blue);
-	printf("pics %d blobs %d\n", header.num_pics, header.num_blobs);
-
 	window = SDL_CreateWindow(
 		"Bootsplash Viewer", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,
 		SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
@@ -166,17 +163,12 @@ int main(int argc, char** argv) {
 			if (pos & 0b01) image->xoff = -(image->xoff + 1);
 			if (pos & 0b10) image->yoff = -(image->yoff + 1);
 		}
-
-		printf("pos: %2x, center_x: %d, center_y: %d, xoff: %d, yoff: %d\n", pic.position, image->center_x, image->center_y, image->xoff, image->yoff);
-
 		// Image frames are stored as 24-bit RGB.
 		image->frames = calloc(image->num_frames, image->geometry.w * image->geometry.h * 4);
 		image->texture = SDL_CreateTexture(
 			renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING,
 			image->geometry.w, image->geometry.h
 		);
-
-		printf("image %d: %dx%d, frames: %d, animated: %d\n", i, image->geometry.w, image->geometry.h, image->num_frames, image->animated);
 	}
 
 	for (int i = 0; i < header.num_blobs; i++) {
@@ -186,8 +178,6 @@ int main(int argc, char** argv) {
 			fprintf(stderr, "Could not read blob %d\n", i);
 			exit(1);
 		}
-
-		//printf("blob %d: %d, format: %d, image: %d\n", i, blob.length, blob.type, blob.picture_id);
 
 		if (blob.picture_id > header.num_pics) {
 			fprintf(stderr, "image ID %d out of bounds, have %d images", blob.picture_id, header.num_pics);
