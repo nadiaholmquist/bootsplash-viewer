@@ -81,7 +81,7 @@ void render() {
 		else if (image->xoff >= 0)
 			pos.x = image->xoff;
 		else
-			pos.x = ww - pos.h + (image->xoff + 1);
+			pos.x = ww - pos.w + (image->xoff + 1);
 
 		if (image->center_y)
 			pos.y = ((wh / 2) - (pos.h / 2)) + image->yoff;
